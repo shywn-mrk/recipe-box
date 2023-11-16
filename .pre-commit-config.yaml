@@ -22,12 +22,13 @@ repos:
       hooks:
           - id: prettier
             args: ['--tab-width', '4', '--single-quote']
-            exclude: '{{cookiecutter.project_slug}}/templates/'
+            exclude: 'templates/'
 
     - repo: https://github.com/psf/black
       rev: 23.11.0
       hooks:
           - id: black
+            args: [--line-length=80]
 
     - repo: https://github.com/PyCQA/isort
       rev: 5.12.0
@@ -38,6 +39,7 @@ repos:
       rev: 6.1.0
       hooks:
           - id: flake8
+            args: [--exclude=config/settings.py]
 
     - repo: https://github.com/Riverside-Healthcare/djLint
       rev: v1.34.0
