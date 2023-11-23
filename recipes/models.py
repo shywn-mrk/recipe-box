@@ -28,7 +28,8 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateTimeField(blank=True, null=True)
 
-    iranian_foods = IranianFoodManager()
+    objects = models.Manager()
+    iranian_foods: models.Manager = IranianFoodManager()
 
     def __str__(self) -> str:
         return self.name
