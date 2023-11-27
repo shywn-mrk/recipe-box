@@ -24,22 +24,29 @@ repos:
             args: ['--tab-width', '4', '--single-quote']
             exclude: 'templates/'
 
-    - repo: https://github.com/psf/black
-      rev: 23.11.0
+    - repo: https://github.com/PyCQA/autoflake
+      rev: v2.2.1
       hooks:
-          - id: black
-            args: [--line-length=80]
+          - id: autoflake
+            args: [--remove-all-unused-imports, --in-place]
 
     - repo: https://github.com/PyCQA/isort
       rev: 5.12.0
       hooks:
           - id: isort
+            args: ['--profile', 'black', --line-length=80]
+
+    - repo: https://github.com/psf/black
+      rev: 23.3.0
+      hooks:
+          - id: black
+            args: [--line-length=80]
 
     - repo: https://github.com/PyCQA/flake8
-      rev: 6.1.0
+      rev: 6.0.0
       hooks:
           - id: flake8
-            args: [--exclude=config/settings.py]
+            args: [--config, setup.cfg]
 
     - repo: https://github.com/Riverside-Healthcare/djLint
       rev: v1.34.0

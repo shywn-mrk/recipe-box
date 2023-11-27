@@ -8,6 +8,9 @@
                  class="img-fluid"
                  alt="{{ recipe.title }}">
             <p class="card-text">Author: {{ recipe.user.username }}</p>
+            <p class="card-text">
+                Country: {{ recipe.country.name }} <i class="{{ recipe.country.flag_css }}"></i>
+            </p>
             <p class="card-text">Ingredients: {{ recipe.ingredients }}</p>
             <p class="card-text">Servings: {{ recipe.servings }}</p>
             <p class="card-text">Created: {{ recipe.created_at }}</p>
