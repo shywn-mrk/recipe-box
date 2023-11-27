@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django_countries.fields import CountryField
 
 from .managers import IranianFoodManager
 
@@ -19,7 +20,7 @@ class Category(models.Model):
 class Recipe(models.Model):
     name = models.CharField(max_length=150)
     ingredients = models.TextField()
-    country = models.CharField(max_length=100)
+    country = CountryField()
     categories = models.ManyToManyField(Category)
     method = models.TextField()
     cook_duration_minutes = models.PositiveIntegerField()
