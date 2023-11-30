@@ -30,7 +30,7 @@ class Recipe(models.Model):
     updated_at = models.DateTimeField(blank=True, null=True)
 
     objects = models.Manager()
-    iranian_foods: models.Manager = IranianFoodManager()
+    user_recipes: models.Manager = IranianFoodManager()
 
     def __str__(self) -> str:
         return self.name

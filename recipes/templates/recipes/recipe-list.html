@@ -5,24 +5,15 @@
 {% block content %}
     <h2 class="mb-4">Recipe List</h2>
     <div class="row">
-        {% for recipe in recipes %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <img class="card-img-top"
-                         src="https://via.placeholder.com/286x180"
-                         alt="{{ recipe.name | title }}">
-                    <div class="card-body">
-                        <h3 class="card-title">{{ recipe.name | title }}</h3>
-                        <p class="card-text">Author: {{ recipe.user.username }}</p>
-                        <p class="card-text">{{ recipe.ingredients }}</p>
-                        <p class="card-text">
-                            Country: {{ recipe.country.name }} <i class="{{ recipe.country.flag_css }}"></i>
-                        </p>
-                        <a href="{% url 'recipes:detail' pk=recipe.pk %}"
-                           class="btn btn-primary"><i class="fa-solid fa-circle-info"></i> See Full Recipe</a>
-                    </div>
-                </div>
+        {% if recipes %}
+            {% for recipe in recipes %}
+                {% include "partials/recipe_item.html" with recipe=recipe %}
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                No recipe is available at the moment. Please wait for others
+                to create new recipes or try to add new ones your self.
             </div>
-        {% endfor %}
+        {% endif %}
     </div>
 {% endblock content %}
