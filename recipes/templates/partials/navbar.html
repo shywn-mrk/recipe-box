@@ -19,7 +19,7 @@
                     <a class="nav-link" href="{% url 'recipes:discover' %}"><i class="fa-solid fa-magnifying-glass"></i> Discover</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href=""><i class="fa-solid fa-plus"></i> Add Recipe</a>
+                    <a class="nav-link" href="{% url 'recipes:add' %}"><i class="fa-solid fa-plus"></i> Add Recipe</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">

@@ -1,0 +1,17 @@
+<form method="get" action="{% url 'recipes:list' %}">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+        <div class="col-md-4 mb-3">
+            {{ form.country.label_tag }}
+            {{ form.country }}
+        </div>
+        <div class="col-md-4 mb-3">
+            {{ form.ingredients.label_tag }}
+            {{ form.ingredients }}
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>

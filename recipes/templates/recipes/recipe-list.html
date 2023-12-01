@@ -4,10 +4,14 @@
 {% endblock title %}
 {% block content %}
     <h2 class="mb-4">Recipe List</h2>
-    <div class="row">
+    <div class="alert alert-info" role="alert">
+        <small>Found {{ recipes_count }} recipes.</small>
+    </div>
+    {% include "partials/recipe-search-bar.html" %}
+    <div class="row mt-4">
         {% if recipes %}
             {% for recipe in recipes %}
-                {% include "partials/recipe_item.html" with recipe=recipe %}
+                {% include "partials/recipe-item.html" with recipe=recipe %}
             {% endfor %}
         {% else %}
             <div class="alert alert-warning" role="alert">
