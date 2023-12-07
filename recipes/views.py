@@ -1,10 +1,19 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import TemplateView
+from django.views.generic import DetailView, ListView, TemplateView
 
 from recipes.forms import RecipeForm, RecipeSearchForm
 
 from .models import Recipe
+
+
+class UserRecipeListView(LoginRequiredMixin, ListView):
+    model = Recipe
+    context_object_name = "recipes"
+
+    def get_queryset(self):
+        return Recipe.objects.filter(user=self.request.user)
 
 
 @login_required
@@ -21,6 +30,11 @@ def recipe_list(request):
     return render(request, "recipes/recipe-list.html", context=context)
 
 
+class RecipeListView(ListView):
+    model = Recipe
+    context_object_name = "recipes"
+
+
 def recipe_list_discover(request):
     recipes = Recipe.objects.all()
     form = RecipeSearchForm()
@@ -32,6 +46,10 @@ def recipe_list_discover(request):
     }
 
     return render(request, "recipes/recipe-list.html", context=context)
+
+
+class RecipeDetailView(DetailView):
+    model = Recipe
 
 
 def recipe_detail(request, pk):
