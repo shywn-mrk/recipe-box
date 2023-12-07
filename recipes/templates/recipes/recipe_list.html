@@ -9,10 +9,11 @@
     </div>
     {% include "partials/recipe-search-bar.html" %}
     <div class="row mt-4">
-        {% if recipes %}
+        {% if object_list %}
             {% for recipe in object_list %}
                 {% include "partials/recipe-item.html" with recipe=recipe %}
             {% endfor %}
+            {% include "partials/pagination.html" %}
         {% else %}
             <div class="alert alert-warning" role="alert">
                 No recipe is available at the moment. Please wait for others

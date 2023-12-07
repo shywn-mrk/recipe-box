@@ -3,17 +3,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView, TemplateView
 
-from recipes.forms import RecipeForm, RecipeSearchForm
-
+from .forms import RecipeForm, RecipeSearchForm
 from .models import Recipe
 
 
 class UserRecipeListView(LoginRequiredMixin, ListView):
     model = Recipe
-    context_object_name = "recipes"
+    paginate_by = 15
 
     def get_queryset(self):
         return Recipe.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = RecipeSearchForm()
+        return context
 
 
 @login_required
@@ -32,7 +36,12 @@ def recipe_list(request):
 
 class RecipeListView(ListView):
     model = Recipe
-    context_object_name = "recipes"
+    paginate_by = 15
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = RecipeSearchForm()
+        return context
 
 
 def recipe_list_discover(request):

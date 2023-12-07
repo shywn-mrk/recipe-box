@@ -13,13 +13,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'recipes:list' %}"><i class="fa-solid fa-house"></i> Home</a>
+                    <a class="nav-link {% if request.path == '/recipes/' %}active{% endif %}"
+                       href="{% url 'recipes:list' %}"><i class="fa-solid fa-house"></i> Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'recipes:discover' %}"><i class="fa-solid fa-magnifying-glass"></i> Discover</a>
+                    <a class="nav-link {% if request.path == '/recipes/discover/' %}active{% endif %}"
+                       href="{% url 'recipes:discover' %}"><i class="fa-solid fa-magnifying-glass"></i> Discover</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'recipes:add' %}"><i class="fa-solid fa-plus"></i> Add Recipe</a>
+                    <a class="nav-link {% if request.path == '/recipes/add/' %}active{% endif %}"
+                       href="{% url 'recipes:add' %}"><i class="fa-solid fa-plus"></i> Add Recipe</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
