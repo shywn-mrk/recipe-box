@@ -12,7 +12,26 @@ class UserRecipeListView(LoginRequiredMixin, ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        return Recipe.objects.filter(user=self.request.user)
+        form = RecipeSearchForm(self.request.GET)
+        queryset = Recipe.objects.filter(user=self.request.user)
+
+        if form.is_valid():
+            print("cleaned_data: ", form.cleaned_data)
+
+            if form.cleaned_data["name"]:
+                queryset = queryset.filter(
+                    name__icontains=form.cleaned_data["name"]
+                )
+
+            if form.cleaned_data["country"]:
+                queryset = queryset.filter(country=form.cleaned_data["country"])
+
+            if form.cleaned_data["ingredients"]:
+                queryset = queryset.filter(
+                    ingredients__icontains=form.cleaned_data["ingredients"]
+                )
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,11 +56,32 @@ def recipe_list(request):
 class RecipeListView(ListView):
     model = Recipe
     paginate_by = 15
+    ordering = ["created_at"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form"] = RecipeSearchForm()
         return context
+
+    def get_queryset(self):
+        form = RecipeSearchForm(self.request.GET)
+        queryset = Recipe.objects.all()
+
+        if form.is_valid():
+            if form.cleaned_data["name"]:
+                queryset = queryset.filter(
+                    name__icontains=form.cleaned_data["name"]
+                )
+
+            if form.cleaned_data["country"]:
+                queryset = queryset.filter(country=form.cleaned_data["country"])
+
+            if form.cleaned_data["ingredients"]:
+                queryset = queryset.filter(
+                    ingredients__icontains=form.cleaned_data["ingredients"]
+                )
+
+        return queryset
 
 
 def recipe_list_discover(request):
