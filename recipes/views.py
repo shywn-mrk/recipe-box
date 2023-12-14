@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect, render
@@ -105,6 +106,11 @@ class RecipeDeleteView(UserPassesTestMixin, DeleteView):  # type: ignore
 
     def test_func(self):
         return self.get_object().user == self.request.user
+
+    def post(self, request, *args, **kwargs):
+        # Override the delete method to include a success message
+        messages.success(self.request, "Recipe successfully deleted.")
+        return super().delete(request, *args, **kwargs)
 
 
 def recipe_detail(request, pk):

@@ -19,13 +19,22 @@
             <p class="card-text">Instructions: {{ recipe.method }}</p>
             <p class="card-text">Cooking Time: {{ recipe.cook_duration_minutes }} minutes</p>
             {% if request.user == recipe.user %}
-                <form method="post" action={% url 'recipes:delete' pk=recipe.pk %}>
+                <form method="post"
+                      class="inline-form"
+                      action="{% url 'recipes:delete' pk=recipe.pk %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">
                         <i class="fa-solid fa-trash"></i> Delete
                     </button>
                 </form>
-                <a href="" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                <form method="post"
+                      class="inline-form"
+                      action="{% url 'recipes:delete' pk=recipe.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">
+                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                    </button>
+                </form>
             {% endif %}
         </div>
     </div>
