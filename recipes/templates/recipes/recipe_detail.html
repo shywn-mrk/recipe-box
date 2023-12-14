@@ -19,7 +19,12 @@
             <p class="card-text">Instructions: {{ recipe.method }}</p>
             <p class="card-text">Cooking Time: {{ recipe.cook_duration_minutes }} minutes</p>
             {% if request.user == recipe.user %}
-                <a href="" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Delete</a>
+                <form method="post" action={% url 'recipes:delete' pk=recipe.pk %}>
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i> Delete
+                    </button>
+                </form>
                 <a href="" class="btn btn-secondary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
             {% endif %}
         </div>
