@@ -1,7 +1,7 @@
 {% if messages %}
     <div class="alert alert-secondary alert-dismissible fade show"
          role="alert">
-        {% for message in messages %}<strong>{{ message.tags }}</strong> {{ message }}{% endfor %}
+        {% for message in messages %}{{ message }}{% endfor %}
         <button type="button"
                 class="btn-close"
                 data-bs-dismiss="alert"

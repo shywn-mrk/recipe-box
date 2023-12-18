@@ -3,7 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DeleteView, DetailView, ListView, TemplateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    TemplateView,
+)
 
 from .forms import RecipeForm, RecipeSearchForm
 from .models import Recipe
@@ -15,7 +21,9 @@ class UserRecipeListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         form = RecipeSearchForm(self.request.GET)
-        queryset = Recipe.objects.filter(user=self.request.user)
+        queryset = Recipe.objects.filter(user=self.request.user).order_by(
+            "-created_at"
+        )
 
         if form.is_valid():
             if form.cleaned_data["name"]:
@@ -64,7 +72,7 @@ class RecipeListView(ListView):
 
     def get_queryset(self):
         form = RecipeSearchForm(self.request.GET)
-        queryset = Recipe.objects.all()
+        queryset = Recipe.objects.order_by("-created_at")
 
         if form.is_valid():
             if form.cleaned_data["name"]:
@@ -108,8 +116,10 @@ class RecipeDeleteView(UserPassesTestMixin, DeleteView):  # type: ignore
         return self.get_object().user == self.request.user
 
     def post(self, request, *args, **kwargs):
-        # Override the delete method to include a success message
-        messages.success(self.request, "Recipe successfully deleted.")
+        messages.success(
+            self.request,
+            f"Recipe with the name of {self.get_object().name} successfully deleted.",
+        )
         return super().delete(request, *args, **kwargs)
 
 
@@ -134,6 +144,16 @@ def recipe_add(request):
         form = RecipeForm()
 
     return render(request, "recipes/recipe-add.html", {"form": form})
+
+
+class RecipeAddView(LoginRequiredMixin, CreateView):
+    model = Recipe
+    form_class = RecipeForm
+    success_url = reverse_lazy("recipes:list")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
 
 class IndexView(TemplateView):

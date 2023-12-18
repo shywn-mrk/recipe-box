@@ -30,7 +30,7 @@ class RecipeSearchForm(forms.Form):
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        exclude = ["user"]
+        exclude = ["user", "updated_at"]
         widgets = {
             "name": forms.TextInput(
                 attrs={
