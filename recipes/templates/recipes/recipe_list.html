@@ -7,11 +7,11 @@
     <div class="alert alert-info" role="alert">
         <small>Found {{ recipes_count }} recipes.</small>
     </div>
-    {% include "partials/recipe-search-bar.html" %}
+    {% include "partials/recipe_search_bar.html" %}
     <div class="row mt-4">
         {% if object_list %}
             {% for recipe in object_list %}
-                {% include "partials/recipe-item.html" with recipe=recipe %}
+                {% include "partials/recipe_item.html" with recipe=recipe %}
             {% endfor %}
             {% include "partials/pagination.html" %}
         {% else %}
