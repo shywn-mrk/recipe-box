@@ -27,14 +27,10 @@
                         <i class="fa-solid fa-trash"></i> Delete
                     </button>
                 </form>
-                <form method="post"
-                      class="inline-form"
-                      action="{% url 'recipes:delete' pk=recipe.pk %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-secondary">
-                        <i class="fa-solid fa-pen-to-square"></i> Edit
-                    </button>
-                </form>
+                <a href="{% url 'recipes:update' pk=recipe.pk %}"
+                   class="btn btn-secondary">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                </a>
             {% endif %}
         </div>
     </div>

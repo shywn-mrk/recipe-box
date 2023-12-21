@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}
+    Add Recipe
+{% endblock title %}
+{% block content %}
+    <div class="container mt-4">
+        <h2>Edit Recipe</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.ingredients.label_tag }}
+            {{ form.ingredients }}
+            {{ form.country.label_tag }}
+            {{ form.country }}
+            <div class="form-group">
+                <label>{{ form.categories.label_tag }}</label>
+                {% for category in form.categories %}<div class="form-check">{{ category }}</div>{% endfor %}
+            </div>
+            {{ form.method.label_tag }}
+            {{ form.method }}
+            {{ form.cook_duration_minutes.label_tag }}
+            {{ form.cook_duration_minutes }}
+            {{ form.servings.label_tag }}
+            {{ form.servings }}
+            <button type="submit" class="btn btn-secondary mt-3">Edit Recipe</button>
+        </form>
+    </div>
+{% endblock content %}

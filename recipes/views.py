@@ -1,7 +1,7 @@
+from datetime import datetime
+
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -9,6 +9,7 @@ from django.views.generic import (
     DetailView,
     ListView,
     TemplateView,
+    UpdateView,
 )
 
 from .forms import RecipeForm, RecipeSearchForm
@@ -43,22 +44,9 @@ class UserRecipeListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["recipes_count"] = self.get_queryset().count()
         context["form"] = RecipeSearchForm(initial=self.request.GET)
         return context
-
-
-@login_required
-def recipe_list(request):
-    recipes = Recipe.objects.filter(user=request.user)
-    form = RecipeSearchForm()
-
-    context = {
-        "recipes": recipes,
-        "recipes_count": recipes.count(),
-        "form": form,
-    }
-
-    return render(request, "recipes/recipe-list.html", context=context)
 
 
 class RecipeListView(ListView):
@@ -91,24 +79,11 @@ class RecipeListView(ListView):
         return queryset
 
 
-def recipe_list_discover(request):
-    recipes = Recipe.objects.all()
-    form = RecipeSearchForm()
-
-    context = {
-        "recipes": recipes,
-        "recipes_count": recipes.count(),
-        "form": form,
-    }
-
-    return render(request, "recipes/recipe-list.html", context=context)
-
-
 class RecipeDetailView(DetailView):
     model = Recipe
 
 
-class RecipeDeleteView(UserPassesTestMixin, DeleteView):  # type: ignore
+class RecipeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):  # type: ignore
     model = Recipe
     success_url = reverse_lazy("recipes:list")
 
@@ -123,30 +98,7 @@ class RecipeDeleteView(UserPassesTestMixin, DeleteView):  # type: ignore
         return super().delete(request, *args, **kwargs)
 
 
-def recipe_detail(request, pk):
-    recipe = get_object_or_404(Recipe, pk=pk)
-
-    context = {"recipe": recipe}
-
-    return render(request, "recipes/recipe-detail.html", context=context)
-
-
-@login_required
-def recipe_add(request):
-    if request.method == "POST":
-        form = RecipeForm(request.POST)
-        if form.is_valid():
-            new_recipe = form.save(commit=False)
-            new_recipe.user = request.user
-            new_recipe.save()
-            return redirect("recipes:list")
-    else:
-        form = RecipeForm()
-
-    return render(request, "recipes/recipe-add.html", {"form": form})
-
-
-class RecipeAddView(LoginRequiredMixin, CreateView):
+class RecipeCreateView(LoginRequiredMixin, CreateView):
     model = Recipe
     form_class = RecipeForm
     success_url = reverse_lazy("recipes:list")
@@ -154,6 +106,20 @@ class RecipeAddView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class RecipeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Recipe
+    form_class = RecipeForm
+    success_url = reverse_lazy("recipes:list")
+    template_name = "recipes/recipe_update.html"
+
+    def form_valid(self, form):
+        form.instance.updated_at = datetime.now()
+        return super().form_valid(form)
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
 
 
 class IndexView(TemplateView):
