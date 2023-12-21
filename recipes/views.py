@@ -55,6 +55,7 @@ class RecipeListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["recipes_count"] = self.get_queryset().count()
         context["form"] = RecipeSearchForm(initial=self.request.GET)
         return context
 
