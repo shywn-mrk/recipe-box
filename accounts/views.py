@@ -8,7 +8,7 @@ from .forms import CustomUserCreationForm
 class CustomRegistrationView(CreateView):
     template_name = "accounts/register.html"
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("accounts:login")
 
 
 class CustomPasswordResetView(PasswordResetView):
