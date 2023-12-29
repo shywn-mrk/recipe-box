@@ -38,6 +38,7 @@ class RecipeForm(forms.ModelForm):
                     "placeholder": "Enter recipe name",
                 }
             ),
+            "image": forms.FileInput(attrs={"class": "form-control"}),
             "ingredients": forms.Textarea(
                 attrs={
                     "class": "form-control",

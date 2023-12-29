@@ -1,7 +1,7 @@
 <div class="col-md-4">
     <div class="card mb-4">
         <img class="card-img-top"
-             src="https://via.placeholder.com/286x180"
+             src="{% if recipe.image %}{{ recipe.image.url }}{% else %}https://via.placeholder.com/286x180{% endif %}"
              alt="{{ recipe.name | title }}">
         <div class="card-body">
             <h3 class="card-title">{{ recipe.name | title }}</h3>

@@ -6,8 +6,8 @@
     <h2 class="mb-4">{{ recipe.name | title }}</h2>
     <div class="card">
         <div class="card-body">
-            <img src="https://via.placeholder.com/286x180"
-                 class="img-fluid"
+            <img src="{% if recipe.image %}{{ recipe.image.url }}{% else %}https://via.placeholder.com/286x180{% endif %}"
+                 class="detail-image"
                  alt="{{ recipe.title }}">
             <p class="card-text">Author: {{ recipe.user.username }}</p>
             <p class="card-text">

@@ -19,6 +19,7 @@ class Category(models.Model):
 
 class Recipe(models.Model):
     name = models.CharField(max_length=150)
+    image = models.ImageField(upload_to="recipes/images", blank=True, null=True)
     ingredients = models.TextField()
     country = CountryField()
     categories = models.ManyToManyField(Category)
