@@ -30,7 +30,8 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+                        <a class="nav-link {% if request.path == '/accounts/login/' %}active{% endif %}"
+                           href="{% url 'accounts:login' %}"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
                     </li>
                 {% endif %}
             </ul>

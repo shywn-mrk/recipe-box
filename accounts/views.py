@@ -12,9 +12,9 @@ class CustomRegistrationView(CreateView):
 
 
 class CustomPasswordResetView(PasswordResetView):
-    template_name = "accounts/password-reset.html"
+    template_name = "accounts/password_reset.html"
     email_template_name = "accounts/password_reset_email.txt"
 
 
 class CustomPasswordResetDoneView(TemplateView):
-    template_name = "accounts/password-reset-done.html"
+    template_name = "accounts/password_reset_done.html"
