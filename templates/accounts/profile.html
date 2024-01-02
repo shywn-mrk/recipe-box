@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}
+    User Profile
+{% endblock title %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="mb-0 text-center">User Profile</h2>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-3">Username:</dt>
+                            <dd class="col-sm-9">
+                                {{ user.username }}
+                            </dd>
+                            <dt class="col-sm-3">Email:</dt>
+                            <dd class="col-sm-9">
+                                {{ user.email }}
+                            </dd>
+                            <dd class="col-sm-9">
+                                {{ user.password }}
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{% url 'accounts:edit-profile' %}" class="btn btn-secondary">Edit Profile</a>
+                        <a href="{% url 'accounts:password-change' %}" class="btn btn-secondary">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

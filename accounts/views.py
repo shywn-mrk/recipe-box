@@ -1,8 +1,17 @@
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import (
+    PasswordChangeView,
+    PasswordResetDoneView,
+    PasswordResetView,
+)
+from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, DetailView, UpdateView
 
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, UserProfileForm
+
+User = get_user_model()
 
 
 class CustomRegistrationView(CreateView):
@@ -16,5 +25,32 @@ class CustomPasswordResetView(PasswordResetView):
     email_template_name = "accounts/password_reset_email.txt"
 
 
-class CustomPasswordResetDoneView(TemplateView):
+class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = "accounts/password_reset_done.html"
+
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = "accounts/password_change.html"
+    success_url = reverse_lazy("recipes:list")
+
+
+class ProfileView(LoginRequiredMixin, DetailView):
+    template_name = "accounts/profile.html"
+
+    def get(self, request, *args, **kwargs):
+        user = (
+            User.objects.filter(pk=request.user.pk)
+            .values("username", "email")
+            .first()
+        )
+        return render(request, self.template_name, {"user": user})
+
+
+class EditProfileView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserProfileForm
+    template_name = "accounts/edit_profile.html"
+    success_url = reverse_lazy("accounts:profile")
+
+    def get_object(self, queryset=None):
+        return User.objects.get(pk=self.request.user.pk)
