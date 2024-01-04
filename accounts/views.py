@@ -48,10 +48,10 @@ class ProfileView(LoginRequiredMixin, View):
         )
 
 
-class EditProfileView(LoginRequiredMixin, UpdateView):
+class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
-    template_name = "accounts/edit_profile.html"
+    template_name = "accounts/profile_edit.html"
     success_url = reverse_lazy("accounts:profile")
 
     def get_object(self, queryset=None):

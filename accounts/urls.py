@@ -6,7 +6,7 @@ from .views import (
     CustomPasswordResetDoneView,
     CustomPasswordResetView,
     CustomRegistrationView,
-    EditProfileView,
+    ProfileEditView,
     ProfileView,
 )
 
@@ -19,7 +19,7 @@ urlpatterns = [
     ),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("profile/", ProfileView.as_view(), name="profile"),
-    path("edit_profile/", EditProfileView.as_view(), name="edit-profile"),
+    path("edit_profile/", ProfileEditView.as_view(), name="edit-profile"),
     path("register/", CustomRegistrationView.as_view(), name="register"),
     path(
         "password_change/",
