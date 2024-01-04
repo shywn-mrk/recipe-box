@@ -7,7 +7,7 @@ from django.contrib.auth.views import (
 )
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, UpdateView, View
 
 from .forms import CustomUserCreationForm, UserProfileForm
 
@@ -34,16 +34,18 @@ class CustomPasswordChangeView(PasswordChangeView):
     success_url = reverse_lazy("recipes:list")
 
 
-class ProfileView(LoginRequiredMixin, DetailView):
+class ProfileView(LoginRequiredMixin, View):
     template_name = "accounts/profile.html"
 
     def get(self, request, *args, **kwargs):
-        user = (
+        user_profile = (
             User.objects.filter(pk=request.user.pk)
             .values("username", "email")
             .first()
         )
-        return render(request, self.template_name, {"user": user})
+        return render(
+            request, self.template_name, {"user_profile": user_profile}
+        )
 
 
 class EditProfileView(LoginRequiredMixin, UpdateView):
